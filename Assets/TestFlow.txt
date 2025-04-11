@@ -1,3 +1,4 @@
+---------------------- ---------------------- 
 # Caso de Uso
 **Você é um desenvolvedor da equipe DeveloperStore. Agora precisamos implementar os protótipos da API.**
 Como trabalhamos com `DDD`, para referenciar entidades de outros domínios, usamos o padrão `Identidades Externas` com desnormalização das descrições das entidades.
