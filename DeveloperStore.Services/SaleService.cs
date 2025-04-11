@@ -40,6 +40,19 @@ public class SaleService : ISaleService
 
     public Task<IEnumerable<Sale>> GetAllSalesAsync() => _repository.GetAllAsync();
 
+    public async Task<IEnumerable<Sale>> GetSalesPagedAsync(int page, int size, string order)
+    {
+        var allSales = await _repository.GetAllAsync();
+
+        var ordered = order.ToLower() == "desc"
+            ? allSales.OrderByDescending(s => s.Date)
+            : allSales.OrderBy(s => s.Date);
+
+        return ordered
+            .Skip((page - 1) * size)
+            .Take(size);
+    }
+
     public Task<Sale?> GetSaleByIdAsync(Guid id) => _repository.GetByIdAsync(id);
 
     public async Task CancelSaleItemAsync(Guid saleId, Guid itemId)

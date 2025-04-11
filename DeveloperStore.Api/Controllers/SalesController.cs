@@ -19,9 +19,13 @@ public class SalesController : ControllerBase
 
     // GET /sales
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SaleDto>>> GetSales()
+    public async Task<ActionResult<IEnumerable<SaleDto>>> GetSales(
+    [FromQuery(Name = "_page")] int page = 1,
+    [FromQuery(Name = "_size")] int size = 10,
+    [FromQuery(Name = "_order")] string order = "asc")
     {
-        var sales = await _saleService.GetAllSalesAsync();
+        // var sales = await _saleService.GetAllSalesAsync();
+        var sales = await _saleService.GetSalesPagedAsync(page, size, order);
         var salesDto = _mapper.Map<IEnumerable<SaleDto>>(sales);
         return Ok(salesDto);
     }
