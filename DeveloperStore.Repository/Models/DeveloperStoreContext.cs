@@ -16,7 +16,7 @@ public class DeveloperStoreContext : DbContext
 
         // Configuração da relação one-to-many: Sale -> SaleItems
         modelBuilder.Entity<SaleItem>()
-            .HasOne(si => si.Id)           
+            .HasOne(si => si.Sale)           
             .WithMany(s => s.Items)          // Cada Sale tem muitos SaleItems
             .HasForeignKey(si => si.SaleId)  // Chave estrangeira em SaleItem
             .OnDelete(DeleteBehavior.Cascade);

@@ -1,8 +1,8 @@
-using DeveloperStore.Repository;      // Namespaces hipotéticos dos projetos
+using DeveloperStore.Repository;      
 using DeveloperStore.Services;
-using DeveloperStore.Services.DTOs;   // Supondo que os DTOs estejam neste namespace
-using DeveloperStore.Repository.Models; // Supondo que as entidades Sale e SaleItem estejam aqui
 using Microsoft.EntityFrameworkCore;
+using DeveloperStore.Domain.Interfaces;
+using DeveloperStore.Services.Interfaces;
 using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -7,6 +7,8 @@ public class SaleItem
     public int Quantity { get; set; }
     public decimal UnitPrice { get; set; }
     public decimal Discount { get; set; }
-
     public decimal Total => (UnitPrice * Quantity) - Discount;
+
+    public Guid SaleId { get; set; }              // 🔗 Chave estrangeira para Sale
+    public Sale Sale { get; set; } = null!;       // 🔁 Propriedade de navegação
 }

@@ -1,9 +1,10 @@
 ﻿using DeveloperStore.Domain.Entities;
 using DeveloperStore.Domain.Interfaces;
+using DeveloperStore.Services.Interfaces;
 
 namespace DeveloperStore.Services;
 
-public class SaleService
+public class SaleService : ISaleService
 {
     private readonly ISaleRepository _repository;
 
@@ -12,7 +13,7 @@ public class SaleService
         _repository = repository;
     }
 
-    public async Task CreateSaleAsync(Sale sale)
+    public async Task<Sale> CreateSaleAsync(Sale sale)
     {
         foreach (var item in sale.Items)
         {
@@ -29,10 +30,14 @@ public class SaleService
 
         Console.WriteLine("Event: SaleCreated");
         await _repository.AddAsync(sale);
+        return sale;
     }
 
-    public Task<IEnumerable<Sale>> GetAllAsync() => _repository.GetAllAsync();
-    public Task<Sale?> GetByIdAsync(Guid id) => _repository.GetByIdAsync(id);
-    public Task UpdateAsync(Sale sale) => _repository.UpdateAsync(sale);
-    public Task DeleteAsync(Guid id) => _repository.DeleteAsync(id);
+    public Task<IEnumerable<Sale>> GetAllSalesAsync() => _repository.GetAllAsync();
+
+    public Task<Sale?> GetSaleByIdAsync(Guid id) => _repository.GetByIdAsync(id);
+
+    public Task UpdateSaleAsync(Sale sale) => _repository.UpdateAsync(sale);
+
+    public Task DeleteSaleAsync(Guid id) => _repository.DeleteAsync(id);
 }

@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using DeveloperStore.Services;
 using DeveloperStore.Services.DTOs;
-using DeveloperStore.Repository.Models;
 using AutoMapper;
 using DeveloperStore.Domain.Entities;
+using DeveloperStore.Services.Interfaces;
 
 [ApiController]
-[Route("sales")]  // Rota base para este controller (expondo /sales)
+[Route("sales")]
 public class SalesController : ControllerBase
 {
     private readonly ISaleService _saleService;
@@ -18,74 +17,57 @@ public class SalesController : ControllerBase
         _mapper = mapper;
     }
 
-    // GET /sales - lista todas as vendas
+    // GET /sales
     [HttpGet]
-    public ActionResult<IEnumerable<SaleDto>> GetSales()
+    public async Task<ActionResult<IEnumerable<SaleDto>>> GetSales()
     {
-        var sales = _saleService.GetAllSales();              // Recupera todas as vendas (entidades de domínio)
-        var salesDto = _mapper.Map<IEnumerable<SaleDto>>(sales);  // Mapeia para DTOs de saída
+        var sales = await _saleService.GetAllSalesAsync();
+        var salesDto = _mapper.Map<IEnumerable<SaleDto>>(sales);
         return Ok(salesDto);
     }
 
-    // GET /sales/{id} - obtém uma venda pelo ID
+    // GET /sales/{id}
     [HttpGet("{id}")]
-    public ActionResult<SaleDto> GetSale(int id)
+    public async Task<ActionResult<SaleDto>> GetSale(Guid id)
     {
-        var sale = _saleService.GetSaleById(id);      // Busca a venda pelo ID
+        var sale = await _saleService.GetSaleByIdAsync(id);
         if (sale == null)
             return NotFound();
 
-        var saleDto = _mapper.Map<SaleDto>(sale);     // Converte entidade para DTO
+        var saleDto = _mapper.Map<SaleDto>(sale);
         return Ok(saleDto);
     }
 
-    // POST /sales - cria uma nova venda
+    // POST /sales
     [HttpPost]
-    public ActionResult<SaleDto> CreateSale([FromBody] SaleDto saleDto)
+    public async Task<ActionResult<SaleDto>> CreateSale([FromBody] SaleDto saleDto)
     {
-        // Mapeia o DTO de entrada para a entidade de domínio
         var saleEntity = _mapper.Map<Sale>(saleDto);
-
-        // Chama o serviço para adicionar a nova venda (o serviço aplica regras de desconto conforme necessário)
-        var createdSale = _saleService.AddSale(saleEntity);
-        // Após criação, mapeia de volta para DTO para retornar ao cliente
+        var createdSale = await _saleService.CreateSaleAsync(saleEntity);
         var createdSaleDto = _mapper.Map<SaleDto>(createdSale);
 
-        // Retorna 201 Created com o objeto criado e o header Location (URL do novo recurso)
         return CreatedAtAction(nameof(GetSale), new { id = createdSaleDto.Id }, createdSaleDto);
     }
 
-    // PUT /sales/{id} - atualiza uma venda existente
+    // PUT /sales/{id}
     [HttpPut("{id}")]
-    public IActionResult UpdateSale(int id, [FromBody] SaleDto saleDto)
+    public async Task<IActionResult> UpdateSale(Guid id, [FromBody] SaleDto saleDto)
     {
         if (id != saleDto.Id)
-        {
             return BadRequest("ID da URL não coincide com ID do objeto");
-        }
 
-        // Mapeia DTO para entidade e define o ID (assegurando que estamos atualizando a venda correta)
         var saleEntity = _mapper.Map<Sale>(saleDto);
         saleEntity.Id = id;
 
-        bool updated = _saleService.UpdateSale(id, saleEntity);
-        if (!updated)
-        {
-            return NotFound(); // Não encontrou a venda para atualizar
-        }
-
-        return NoContent(); // Sucesso na atualização (204 No Content)
+        await _saleService.UpdateSaleAsync(saleEntity);
+        return NoContent();
     }
 
-    // DELETE /sales/{id} - remove uma venda
+    // DELETE /sales/{id}
     [HttpDelete("{id}")]
-    public IActionResult DeleteSale(int id)
+    public async Task<IActionResult> DeleteSale(Guid id)
     {
-        bool removed = _saleService.DeleteSale(id);
-        if (!removed)
-        {
-            return NotFound();
-        }
+        await _saleService.DeleteSaleAsync(id);
         return NoContent();
     }
 }
