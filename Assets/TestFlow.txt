@@ -1,0 +1,42 @@
+# Caso de Uso
+**Você é um desenvolvedor da equipe DeveloperStore. Agora precisamos implementar os protótipos da API.**
+Como trabalhamos com `DDD`, para referenciar entidades de outros domínios, usamos o padrão `Identidades Externas` com desnormalização das descrições das entidades.
+Portanto, você escreverá uma API (CRUD completo) que manipula registros de vendas. A API precisa ser capaz de informar:
+
+* Número da venda                        -- OK
+* Data em que a venda foi realizada      -- OK
+* Cliente                                -- OK
+* Valor total da venda
+* Filial onde a venda foi realizada
+* Produtos                              -- Ok
+
+* Quantidades
+* Preços unitários
+* Descontos
+* Valor total de cada item
+* Cancelado/Não cancelado
+
+
+---------------------- objeto exemplo --------
+{
+  "saleNumber": "SALE-2025-0001",
+  "date": "2025-04-11T15:30:00Z",
+  "customerName": "CHRISTOPHER",
+  "branchName": "Curitiba - Centro",
+  "cancelled": false,
+  "items": [
+    {
+      "productName": "Notebook Dell Inspiron",
+      "quantity": 5,
+      "unitPrice": 3500.00,
+      "discount": 1750.00
+    },
+    {
+      "productName": "Mouse Logitech M185",
+      "quantity": 2,
+      "unitPrice": 80.00,
+      "discount": 0.00
+    }
+  ]
+}
+---------------------------------------
