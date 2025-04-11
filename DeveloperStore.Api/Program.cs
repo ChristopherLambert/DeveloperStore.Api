@@ -27,6 +27,10 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());  // Bus
 // Adicionando suporte a controllers (Web API).
 builder.Services.AddControllers();
 
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // (Opcional: adicionar documentação Swagger em ambiente de desenvolvimento, se desejado)
 // builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
@@ -36,8 +40,8 @@ var app = builder.Build();
 // Configuração do pipeline HTTP (middleware).
 if (app.Environment.IsDevelopment())
 {
-    // app.UseSwagger();
-    // app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
