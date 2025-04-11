@@ -1,4 +1,5 @@
 ﻿using DeveloperStore.Domain.Entities;
+using DeveloperStore.Domain.Events;
 using DeveloperStore.Domain.Interfaces;
 using DeveloperStore.Services.Interfaces;
 
@@ -6,11 +7,13 @@ namespace DeveloperStore.Services;
 
 public class SaleService : ISaleService
 {
-    private readonly ISaleRepository _repository;
+    private readonly ISaleRepository _repository; 
+    private readonly IDomainEventDispatcher _eventDispatcher;
 
-    public SaleService(ISaleRepository repository)
+    public SaleService(ISaleRepository repository, IDomainEventDispatcher eventDispatcher)
     {
         _repository = repository;
+        _eventDispatcher = eventDispatcher;
     }
 
     public async Task<Sale> CreateSaleAsync(Sale sale)
@@ -30,6 +33,8 @@ public class SaleService : ISaleService
 
         Console.WriteLine("Event: SaleCreated");
         await _repository.AddAsync(sale);
+        _eventDispatcher.Dispatch(new SaleCreatedEvent(sale.Id));
+
         return sale;
     }
 
@@ -37,7 +42,15 @@ public class SaleService : ISaleService
 
     public Task<Sale?> GetSaleByIdAsync(Guid id) => _repository.GetByIdAsync(id);
 
-    public Task UpdateSaleAsync(Sale sale) => _repository.UpdateAsync(sale);
+    public async Task UpdateSaleAsync(Sale sale)
+    {
+        await _repository.UpdateAsync(sale);
+        _eventDispatcher.Dispatch(new SaleModifiedEvent(sale.Id));
+    }
 
-    public Task DeleteSaleAsync(Guid id) => _repository.DeleteAsync(id);
+    public async Task DeleteSaleAsync(Guid id)
+    {
+        await _repository.DeleteAsync(id);
+        _eventDispatcher.Dispatch(new SaleCancelledEvent(id));
+    };
 }

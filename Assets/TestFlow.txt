@@ -17,6 +17,20 @@ Portanto, você escreverá uma API (CRUD completo) que manipula registros de ven
 * Cancelado/Não cancelado
 
 
+### Regras de Negócios
+* Compras acima de 4 itens idênticos têm 10% de desconto
+* Compras entre 10 e 20 itens idênticos têm 20% de desconto
+* Não é possível vender mais de 20 itens idênticos
+* Compras abaixo de 4 itens não podem ter desconto
+
+Estas regras de negócios definem níveis e limitações de desconto com base na quantidade:
+1. Níveis de Desconto:
+- 4 ou mais itens: 10% de desconto
+- 10 a 20 itens: 20% de desconto
+2. Restrições:
+- Limite máximo: 20 itens por produto
+- Descontos não são permitidos para quantidades abaixo de 4 itens
+   
 ---------------------- objeto exemplo --------
 {
   "saleNumber": "SALE-2025-0001",
