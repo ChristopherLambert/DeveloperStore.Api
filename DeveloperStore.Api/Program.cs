@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using DeveloperStore.Domain.Interfaces;
 using DeveloperStore.Services.Interfaces;
 using AutoMapper;
+using DeveloperStore.Services.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ builder.Services.AddDbContext<DeveloperStoreContext>(options =>
 // Registrando serviços e repositórios na DI.
 builder.Services.AddScoped<ISaleRepository, SaleRepository>();
 builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IDomainEventDispatcher, ConsoleDomainEventDispatcher>();
 
 // Configurando AutoMapper para mapear entidades e DTOs.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());  
