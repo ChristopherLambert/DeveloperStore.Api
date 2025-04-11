@@ -70,4 +70,18 @@ public class SalesController : ControllerBase
         await _saleService.DeleteSaleAsync(id);
         return NoContent();
     }
+
+    [HttpPatch("{saleId}/items/{itemId}/cancel")]
+    public async Task<IActionResult> CancelItem(Guid saleId, Guid itemId)
+    {
+        try
+        {
+            await _saleService.CancelSaleItemAsync(saleId, itemId);
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+    }
 }

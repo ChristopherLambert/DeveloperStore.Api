@@ -42,6 +42,24 @@ public class SaleService : ISaleService
 
     public Task<Sale?> GetSaleByIdAsync(Guid id) => _repository.GetByIdAsync(id);
 
+    public async Task CancelSaleItemAsync(Guid saleId, Guid itemId)
+    {
+        var sale = await _repository.GetByIdAsync(saleId);
+        if (sale == null)
+            throw new InvalidOperationException("Venda não encontrada");
+
+        var item = sale.Items.FirstOrDefault(i => i.Id == itemId);
+        if (item == null)
+            throw new InvalidOperationException("Item não encontrado");
+
+        // Remove item da venda
+        sale.Items.Remove(item);
+        await _repository.UpdateAsync(sale);
+
+        // Dispara o evento
+        _eventDispatcher.Dispatch(new ItemCancelledEvent(saleId, itemId));
+    }
+
     public async Task UpdateSaleAsync(Sale sale)
     {
         await _repository.UpdateAsync(sale);
@@ -52,5 +70,5 @@ public class SaleService : ISaleService
     {
         await _repository.DeleteAsync(id);
         _eventDispatcher.Dispatch(new SaleCancelledEvent(id));
-    };
+    }
 }

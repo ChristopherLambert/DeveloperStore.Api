@@ -9,4 +9,5 @@ public interface ISaleService
     Task<Sale> CreateSaleAsync(Sale sale);
     Task UpdateSaleAsync(Sale sale);
     Task DeleteSaleAsync(Guid id);
+    Task CancelSaleItemAsync(Guid saleId, Guid itemId);
 }

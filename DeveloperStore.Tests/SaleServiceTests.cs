@@ -11,12 +11,14 @@ public class SaleServiceTests
 {
     private readonly Faker _faker = new();
     private readonly ISaleRepository _repositoryMock;
+    private readonly IDomainEventDispatcher _eventMock;
     private readonly SaleService _service;
 
     public SaleServiceTests()
     {
         _repositoryMock = Substitute.For<ISaleRepository>();
-        _service = new SaleService(_repositoryMock);
+        _eventMock = Substitute.For<IDomainEventDispatcher>();
+        _service = new SaleService(_repositoryMock, _eventMock);
     }
 
     [Fact]
