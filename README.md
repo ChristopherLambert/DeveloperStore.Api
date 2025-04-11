@@ -46,7 +46,6 @@ This is a RESTful API developed with **.NET 8**, following **Domain-Driven Desig
 
 Below is a sample POST request using Swagger:
 
-```json
 {
   "saleNumber": "SALE-2025-0001",
   "date": "2025-04-11T15:30:00Z",
@@ -67,7 +66,7 @@ Below is a sample POST request using Swagger:
       "discount": 0.00
     }
   ]
-}```
+}
 
 ## ✅ Testing
 
