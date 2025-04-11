@@ -40,3 +40,5 @@ Portanto, você escreverá uma API (CRUD completo) que manipula registros de ven
   ]
 }
 ---------------------------------------
+
+dotnet ef migrations add InitialCreate --project ./DeveloperStore.Repository --startup-project ./DeveloperStore.Api
