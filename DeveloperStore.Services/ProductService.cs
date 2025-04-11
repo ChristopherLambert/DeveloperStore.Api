@@ -22,11 +22,23 @@ public class ProductService : IProductService
         var sales = await _repository.GetAllAsync();
         var items = sales.SelectMany(s => s.Items).ToList();
 
-        var baseProducts = items
+        var groupedProducts = items
             .GroupBy(i => i.ProductName)
-            .Select(g => g.First())
-            .Select(i => _mapper.Map<ProductDto>(i))
-            .AsQueryable();
+            .Select(g =>
+            {
+                var representative = g.First();
+                var dto = _mapper.Map<ProductDto>(representative);
+
+                dto.Rating = new RatingDto
+                {
+                    Rate = Math.Round(Random.Shared.NextDouble() * 2 + 3, 1), // Avaliação Aleatoria, implementar no futuro
+                    Count = g.Sum(x => x.Quantity)
+                };
+
+                return dto;
+            });
+
+        var baseProducts = groupedProducts.AsQueryable();
 
         // FILTROS
         if (!string.IsNullOrWhiteSpace(title))

@@ -16,10 +16,6 @@ public class SaleProfile : Profile
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"Generated description for {src.ProductName}"))
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => "default-category"))
             .ForMember(dest => dest.Image, opt => opt.MapFrom(src => "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"))
-            .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => new RatingDto
-            {
-                Rate = 4.0,
-                Count = 100
-            }));
+            .ForMember(dest => dest.Rating, opt => opt.Ignore()); 
     }
 }
