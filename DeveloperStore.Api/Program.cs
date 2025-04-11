@@ -19,10 +19,9 @@ builder.Services.AddDbContext<DeveloperStoreContext>(options =>
 // Registrando serviços e repositórios na DI.
 builder.Services.AddScoped<ISaleRepository, SaleRepository>();
 builder.Services.AddScoped<ISaleService, SaleService>();
-// (Registrar outros repositórios/serviços conforme existirem, p.ex. IProductService, IProductRepository, etc.)
 
 // Configurando AutoMapper para mapear entidades e DTOs.
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());  // Busca Profiles de mapeamento automaticamente&#8203;:contentReference[oaicite:1]{index=1}.
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());  
 
 // Adicionando suporte a controllers (Web API).
 builder.Services.AddControllers();
@@ -31,11 +30,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// (Opcional: adicionar documentação Swagger em ambiente de desenvolvimento, se desejado)
-// builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
+// Aplica migrations automaticamente
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<DeveloperStoreContext>();
+    context.Database.Migrate();
+}
 
 // Configuração do pipeline HTTP (middleware).
 if (app.Environment.IsDevelopment())
@@ -47,5 +48,4 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
