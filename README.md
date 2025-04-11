@@ -44,6 +44,30 @@ This is a RESTful API developed with **.NET 8**, following **Domain-Driven Desig
 
 ![Swagger UI](./Assets/Swagger.png)
 
+Below is a sample POST request using Swagger:
+
+```json
+{
+  "saleNumber": "SALE-2025-0001",
+  "date": "2025-04-11T15:30:00Z",
+  "customerName": "CHRISTOPHER",
+  "branchName": "Curitiba - Centro",
+  "cancelled": false,
+  "items": [
+    {
+      "productName": "Notebook Dell Inspiron",
+      "quantity": 5,
+      "unitPrice": 3500.00,
+      "discount": 1750.00
+    },
+    {
+      "productName": "Mouse Logitech M185",
+      "quantity": 2,
+      "unitPrice": 80.00,
+      "discount": 0.00
+    }
+  ]
+}```
 
 ## ✅ Testing
 
@@ -60,4 +84,5 @@ This is a RESTful API developed with **.NET 8**, following **Domain-Driven Desig
 
 ```bash
 dotnet test
+
 
