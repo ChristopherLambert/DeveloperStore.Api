@@ -16,7 +16,7 @@ Portanto, você escreverá uma API (CRUD completo) que manipula registros de ven
 * Valor total de cada item
 * Cancelado/Não cancelado
 
-
+---------------------- ---------------------- 
 ### Regras de Negócios
 * Compras acima de 4 itens idênticos têm 10% de desconto
 * Compras entre 10 e 20 itens idênticos têm 20% de desconto
